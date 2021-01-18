@@ -1,4 +1,4 @@
-(ns cheffy.recipe.responses
+(ns cheffy.responses
   (:require [spec-tools.data-spec :as ds]))
 
 (def base-url "https://learnreitit.com")

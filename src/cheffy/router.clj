@@ -1,6 +1,7 @@
 (ns cheffy.router
   (:require [reitit.ring :as ring]
             [cheffy.recipe.routes :as recipe]
+            [cheffy.account.routes :as account]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
             [muuntaja.core :as m]
@@ -9,7 +10,8 @@
             [reitit.ring.coercion :as coercion]
             [reitit.ring.middleware.exception :as exception]
             [reitit.dev.pretty :as pretty]
-            [reitit.ring.spec :as rs]))
+            [reitit.ring.spec :as rs]
+            [cheffy.middleware :as mw]))
 
 (def swagger-docs
   ["/swagger.json"
@@ -28,7 +30,7 @@
                :muuntaja   m/instance
                :middleware [swagger/swagger-feature
                             muuntaja/format-middleware
-                            ;exception/exception-middleware
+                            mw/exception-middleware
                             coercion/coerce-request-middleware
                             coercion/coerce-response-middleware]}})
 
@@ -38,7 +40,8 @@
     (ring/router
       [swagger-docs
        ["/v1"
-        (recipe/routes env)]]
+        (recipe/routes env)
+        (account/routes env)]]
       router-config)
     (ring/routes
       (swagger-ui/create-swagger-ui-handler {:path "/"}))))
