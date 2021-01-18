@@ -6,11 +6,12 @@
                  [ring "1.8.1"]
                  [integrant "0.8.0"]
                  [environ "1.2.0"]
-                 [metosin/reitit "0.5.11"]
+                 [metosin/reitit "0.5.2"]
                  [seancorfield/next.jdbc "1.1.613"]
-                 [org.postgresql/postgresql "42.2.18"]
+                 [org.postgresql/postgresql "42.2.14"]
                  [clj-http "3.10.0"]
-                 [ovotech/ring-jwt "2.2.1"]]
+                 [ovotech/ring-jwt "1.2.5"]
+                 [camel-snake-kebab "0.4.2"]]
   :profiles {:uberjar {:aot      :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev     {
