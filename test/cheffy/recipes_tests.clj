@@ -3,7 +3,22 @@
             [cheffy.server :refer :all]
             [cheffy.test-system :as ts]))
 
-(use-fixtures :once ts/token-fixture)
+(defn token-fixture
+  "Fixture to create a new user with auth0, give him recipe management permissions
+   and retrieve correct token for tests. Delete user at cleanup"
+  [f]
+  (ts/create-auth0-user {:connection "Username-Password-Authentication"
+                         :email      "account-testing@cheffy.app"
+                         :password   "Sepulcral94"})
+  (reset! ts/token (ts/get-test-token "account-testing@cheffy.app"))
+  (ts/test-endpoint :post "/v1/account" {:auth true})
+  (ts/test-endpoint :put "/v1/account" {:auth true})
+  (reset! ts/token (ts/get-test-token "account-testing@cheffy.app"))
+  (f)
+  (ts/test-endpoint :delete "/v1/account" {:auth true})
+  (reset! ts/token nil))
+
+(use-fixtures :once token-fixture)
 
 (def recipe-id (atom nil))
 
