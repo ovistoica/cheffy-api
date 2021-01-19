@@ -4,7 +4,10 @@
             [integrant.core :as ig]
             [environ.core :refer [env]]
             [cheffy.router :as router]
-            [next.jdbc :as jdbc]))
+            [next.jdbc :as jdbc]
+            [next.jdbc.connection :as njc])
+  (:import
+    (com.zaxxer.hikari HikariDataSource)))
 
 (defn app
   [env]
@@ -34,7 +37,12 @@
 (defmethod ig/init-key :db/postgres
   [_ {:keys [jdbc-url]}]
   (println "\nConfigured db")
-  (jdbc/with-options jdbc-url jdbc/snake-kebab-opts))
+  (jdbc/with-options
+    (njc/->pool HikariDataSource {:jdbcUrl jdbc-url}) jdbc/snake-kebab-opts))
+
+(defmethod ig/halt-key! :db/postgres
+  [_ config]
+  (.stop ^HikariDataSource (:connectable config)))
 
 (defmethod ig/init-key :auth/auth0
   [_ auth0]
@@ -42,8 +50,8 @@
   auth0)
 
 (defmethod ig/halt-key! :server/jetty
-  [_ jetty]
-  (.stop jetty))
+  [_ config]
+  (.stop config))
 
 (defn -main
   [config-file]

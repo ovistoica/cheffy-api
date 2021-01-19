@@ -11,7 +11,8 @@
                  [org.postgresql/postgresql "42.2.14"]
                  [clj-http "3.10.0"]
                  [ovotech/ring-jwt "1.2.5"]
-                 [camel-snake-kebab "0.4.2"]]
+                 [camel-snake-kebab "0.4.2"]
+                 [com.zaxxer/HikariCP "3.4.5"]]
   :profiles {:uberjar {:aot      :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev     {

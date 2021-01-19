@@ -2,6 +2,7 @@
   (:require [reitit.ring :as ring]
             [cheffy.recipe.routes :as recipe]
             [cheffy.account.routes :as account]
+            [cheffy.conversation.routes :as conversation]
             [reitit.swagger :as swagger]
             [reitit.swagger-ui :as swagger-ui]
             [muuntaja.core :as m]
@@ -43,7 +44,8 @@
       [swagger-docs
        ["/v1"
         (recipe/routes env)
-        (account/routes env)]]
+        (account/routes env)
+        (conversation/routes env)]]
       router-config)
     (ring/routes
       (swagger-ui/create-swagger-ui-handler {:path "/"}))))

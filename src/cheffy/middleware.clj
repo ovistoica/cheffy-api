@@ -3,7 +3,8 @@
             [reitit.ring.middleware.exception :as exception]
             [clojure.pprint :as pp]
             [cheffy.recipe.db :as recipe-db]
-            [ring.util.response :as rr])
+            [ring.util.response :as rr]
+            [next.jdbc.sql :as sql])
   (:import (java.sql SQLException)))
 (def wrap-auth0
   {:name        ::auth0
@@ -74,5 +75,20 @@
                         (handler request)
                         (-> (rr/response {:message "You need to be a cook to manager recipes"
                                           :data    (:uri request)
+                                          :type    :authorization-required})
+                            (rr/status 401))))))})
+
+(def wrap-conversation-participant
+  {:name        ::conversation-participant?
+   :description "Middleware to check if a requestor is an conversation participant"
+   :wrap        (fn [handler db]
+                  (fn [request]
+                    (let [uid (-> request :claims :sub)
+                          conversation-id (-> request :parameters :path :conversation-id)
+                          conversation (sql/find-by-keys db :conversation {:uid uid :conversation-id conversation-id})]
+                      (if (seq conversation)
+                        (handler request)
+                        (-> (rr/response {:message "You need to be a participant of the conversation to perform this action"
+                                          :data    (str "conversation-id " conversation-id)
                                           :type    :authorization-required})
                             (rr/status 401))))))})
