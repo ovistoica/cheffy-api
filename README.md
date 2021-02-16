@@ -1,36 +1,11 @@
-# cheffy
+# cheffy-api
 
-FIXME: description
+Backend server written in clojure for recipe management application
 
-## Installation
-
-Download from http://example.com/FIXME.
 
 ## Usage
+Heroku deployment: https://intense-earth-49554.herokuapp.com/index.html
 
-FIXME: explanation
-
-    $ java -jar cheffy-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2021 FIXME
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
